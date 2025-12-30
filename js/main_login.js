@@ -22,7 +22,7 @@ const main = () => {
       // Guardamos usuario en LocalStorage
       localStorage.setItem("usuarioLogueado", JSON.stringify(usuario));
       // Redirigimos a la tienda
-      window.location.href = "home.html";
+      window.location.href = "index.html";
     } else {
       // LOGIN FALLIDO
       mensajeError.textContent = "Usuario o contraseña incorrectos.";
