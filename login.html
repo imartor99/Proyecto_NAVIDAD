@@ -9,6 +9,12 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <!-- Toastify CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
   </head>
 
   <body>
@@ -46,6 +52,23 @@
             />
           </div>
         </div>
+
+        <!-- CAPTCHA: Pregunta matemática -->
+        <div class="formulario-acceso__campo">
+          <label for="captcha" class="formulario-acceso__etiqueta">
+            Verificación: <span id="preguntaCaptcha"></span>
+          </label>
+          <div class="input-con-icono">
+            <span class="material-icons icono-input">calculate</span>
+            <input
+              type="number"
+              id="captcha"
+              class="formulario-acceso__input"
+              required
+              placeholder="Resultado"
+            />
+          </div>
+        </div>
         <button type="submit" class="formulario-acceso__boton" id="btnEntrar">
           Entrar
         </button>
@@ -56,11 +79,14 @@
         >
           Registrarse
         </button>
-
-        <p id="mensajeError" class="formulario-acceso__error"></p>
       </form>
     </main>
 
+    <!-- Toastify JS -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
     <script type="module" src="js/main_login.js"></script>
   </body>
 </html>
