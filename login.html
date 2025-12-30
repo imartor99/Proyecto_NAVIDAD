@@ -1,12 +1,66 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inicio de Sesión</title>
-</head>
-<body>
-    
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <main class="contenedor-acceso">
+      <form class="formulario-acceso" id="formularioLogin">
+        <h2 class="formulario-acceso__titulo">Iniciar Sesión</h2>
+
+        <div class="formulario-acceso__campo">
+          <label for="email" class="formulario-acceso__etiqueta"
+            >Correo Electrónico</label
+          >
+          <div class="input-con-icono">
+            <span class="material-icons icono-input">email</span>
+            <input
+              type="email"
+              id="email"
+              class="formulario-acceso__input"
+              required
+              placeholder="ejemplo@email.com"
+            />
+          </div>
+        </div>
+        <div class="formulario-acceso__campo">
+          <label for="password" class="formulario-acceso__etiqueta"
+            >Contraseña</label
+          >
+          <div class="input-con-icono">
+            <span class="material-icons icono-input">lock</span>
+            <input
+              type="password"
+              id="password"
+              class="formulario-acceso__input"
+              required
+              placeholder="******"
+            />
+          </div>
+        </div>
+        <button type="submit" class="formulario-acceso__boton" id="btnEntrar">
+          Entrar
+        </button>
+        <button
+          type="button"
+          class="formulario-acceso__boton formulario-acceso__boton--secundario"
+          id="btnRegistrarse"
+        >
+          Registrarse
+        </button>
+
+        <p id="mensajeError" class="formulario-acceso__error"></p>
+      </form>
+    </main>
+
     <script type="module" src="js/main_login.js"></script>
-</body>
+  </body>
 </html>
