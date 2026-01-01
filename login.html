@@ -9,6 +9,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style_login.css" />
     <!-- Toastify CSS -->
     <link
       rel="stylesheet"
@@ -19,67 +20,154 @@
 
   <body>
     <main class="contenedor-acceso">
-      <form class="formulario-acceso" id="formularioLogin">
-        <h2 class="formulario-acceso__titulo">Iniciar Sesión</h2>
+      <!-- Contenedor de la tarjeta 3D con dos caras -->
+      <div class="tarjeta-flip" id="tarjetaFlip">
+        <!-- CARA FRONTAL: LOGIN -->
+        <div class="tarjeta-flip__cara tarjeta-flip__cara--frontal">
+          <form class="formulario-acceso" id="formularioLogin">
+            <img
+              src="assets/img/logo_fondo.png"
+              alt="ProtoShop Logo"
+              class="formulario-acceso__logo"
+            />
+            <h2 class="formulario-acceso__titulo">Iniciar Sesión</h2>
 
-        <div class="formulario-acceso__campo">
-          <label for="email" class="formulario-acceso__etiqueta"
-            >Correo Electrónico</label
-          >
-          <div class="input-con-icono">
-            <span class="material-icons icono-input">email</span>
-            <input
-              type="email"
-              id="email"
-              class="formulario-acceso__input"
-              required
-              placeholder="ejemplo@email.com"
-            />
-          </div>
-        </div>
-        <div class="formulario-acceso__campo">
-          <label for="password" class="formulario-acceso__etiqueta"
-            >Contraseña</label
-          >
-          <div class="input-con-icono">
-            <span class="material-icons icono-input">lock</span>
-            <input
-              type="password"
-              id="password"
-              class="formulario-acceso__input"
-              required
-              placeholder="******"
-            />
-          </div>
+            <div class="formulario-acceso__campo">
+              <label for="email" class="formulario-acceso__etiqueta"
+                >Correo Electrónico</label
+              >
+              <div class="input-con-icono">
+                <span class="material-icons icono-input">email</span>
+                <input
+                  type="email"
+                  id="email"
+                  class="formulario-acceso__input"
+                  required
+                  placeholder="ejemplo@email.com"
+                />
+              </div>
+            </div>
+
+            <div class="formulario-acceso__campo">
+              <label for="password" class="formulario-acceso__etiqueta"
+                >Contraseña</label
+              >
+              <div class="input-con-icono">
+                <span class="material-icons icono-input">lock</span>
+                <input
+                  type="password"
+                  id="password"
+                  class="formulario-acceso__input"
+                  required
+                  placeholder="******"
+                />
+              </div>
+            </div>
+
+            <!-- CAPTCHA: Pregunta matemática -->
+            <div class="formulario-acceso__campo">
+              <label for="captcha" class="formulario-acceso__etiqueta">
+                Verificación: <span id="preguntaCaptcha"></span>
+              </label>
+              <div class="input-con-icono">
+                <span class="material-icons icono-input">calculate</span>
+                <input
+                  type="number"
+                  id="captcha"
+                  class="formulario-acceso__input"
+                  required
+                  placeholder="Resultado"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="formulario-acceso__boton"
+              id="btnEntrar"
+            >
+              Entrar
+            </button>
+            <button
+              type="button"
+              class="formulario-acceso__boton formulario-acceso__boton--secundario"
+              id="btnMostrarRegistro"
+            >
+              Registrarse
+            </button>
+          </form>
         </div>
 
-        <!-- CAPTCHA: Pregunta matemática -->
-        <div class="formulario-acceso__campo">
-          <label for="captcha" class="formulario-acceso__etiqueta">
-            Verificación: <span id="preguntaCaptcha"></span>
-          </label>
-          <div class="input-con-icono">
-            <span class="material-icons icono-input">calculate</span>
-            <input
-              type="number"
-              id="captcha"
-              class="formulario-acceso__input"
-              required
-              placeholder="Resultado"
-            />
-          </div>
+        <!-- CARA TRASERA: REGISTRO -->
+        <div class="tarjeta-flip__cara tarjeta-flip__cara--trasera">
+          <form class="formulario-acceso" id="formularioRegistro">
+            <h2 class="formulario-acceso__titulo">Crear Cuenta</h2>
+
+            <div class="formulario-acceso__campo">
+              <label for="nombreRegistro" class="formulario-acceso__etiqueta"
+                >Nombre Completo</label
+              >
+              <div class="input-con-icono">
+                <span class="material-icons icono-input">person</span>
+                <input
+                  type="text"
+                  id="nombreRegistro"
+                  class="formulario-acceso__input"
+                  required
+                  placeholder="Tu nombre"
+                />
+              </div>
+            </div>
+
+            <div class="formulario-acceso__campo">
+              <label for="emailRegistro" class="formulario-acceso__etiqueta"
+                >Correo Electrónico</label
+              >
+              <div class="input-con-icono">
+                <span class="material-icons icono-input">email</span>
+                <input
+                  type="email"
+                  id="emailRegistro"
+                  class="formulario-acceso__input"
+                  required
+                  placeholder="ejemplo@email.com"
+                />
+              </div>
+            </div>
+
+            <div class="formulario-acceso__campo">
+              <label for="passwordRegistro" class="formulario-acceso__etiqueta"
+                >Contraseña</label
+              >
+              <div class="input-con-icono">
+                <span class="material-icons icono-input">lock</span>
+                <input
+                  type="password"
+                  id="passwordRegistro"
+                  class="formulario-acceso__input"
+                  required
+                  placeholder="Mínimo 6 caracteres"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="formulario-acceso__boton"
+              id="btnRegistrar"
+            >
+              Crear Cuenta
+            </button>
+            <button
+              type="button"
+              class="formulario-acceso__boton formulario-acceso__boton--secundario"
+              id="btnMostrarLogin"
+            >
+              Volver al Login
+            </button>
+          </form>
         </div>
-        <button type="submit" class="formulario-acceso__boton" id="btnEntrar">
-          Entrar
-        </button>
-        <button
-          type="button"
-          class="formulario-acceso__boton formulario-acceso__boton--secundario"
-          id="btnRegistrarse"
-        >
-          Registrarse
-        </button>
-      </form>
+      </div>
     </main>
 
     <!-- Toastify JS -->

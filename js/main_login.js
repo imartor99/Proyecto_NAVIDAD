@@ -71,11 +71,97 @@ const main = () => {
     }
   });
 
-  if (btnRegistrarse) {
-    btnRegistrarse.addEventListener("click", () => {
-      alert("Próximamente: Modal de registro");
-    });
-  }
+  // ========== LÓGICA DEL FLIP CARD ==========
+  const tarjetaFlip = document.getElementById("tarjetaFlip");
+  const btnMostrarRegistro = document.getElementById("btnMostrarRegistro");
+  const btnMostrarLogin = document.getElementById("btnMostrarLogin");
+
+  // Al hacer clic en "Registrarse", volteo la tarjeta añadiendo la clase 'volteada'
+  btnMostrarRegistro.addEventListener("click", () => {
+    tarjetaFlip.classList.add("volteada");
+  });
+
+  // Al hacer clic en "Volver al Login", quito la clase 'volteada' para volver a la cara frontal
+  btnMostrarLogin.addEventListener("click", () => {
+    tarjetaFlip.classList.remove("volteada");
+  });
+
+  // ========== LÓGICA DEL FORMULARIO DE REGISTRO ==========
+  const formularioRegistro = document.getElementById("formularioRegistro");
+
+  formularioRegistro.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
+
+    const nombre = document.getElementById("nombreRegistro").value;
+    const email = document.getElementById("emailRegistro").value;
+    const password = document.getElementById("passwordRegistro").value;
+
+    // Validación básica de contraseña
+    if (password.length < 6) {
+      Toastify({
+        text: "La contraseña debe tener al menos 6 caracteres.",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        close: true,
+        style: {
+          background: "linear-gradient(135deg, #e74c3c, #c0392b)",
+        },
+      }).showToast();
+      return;
+    }
+
+    // Creo el objeto del nuevo usuario
+    const nuevoUsuario = {
+      name: nombre,
+      email: email,
+      password: password,
+    };
+
+    try {
+      // Hago un POST a json-server para añadir el usuario a db.json
+      const respuesta = await fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nuevoUsuario),
+      });
+
+      if (respuesta.ok) {
+        Toastify({
+          text: "Cuenta creada exitosamente. Ahora puedes iniciar sesión.",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          close: true,
+          style: {
+            background: "linear-gradient(135deg, #27ae60, #229954)",
+          },
+        }).showToast();
+
+        // Limpio el formulario y vuelvo al login
+        formularioRegistro.reset();
+        setTimeout(() => {
+          tarjetaFlip.classList.remove("volteada");
+        }, 1500);
+      } else {
+        throw new Error("Error al crear la cuenta");
+      }
+    } catch (error) {
+      console.error("Error en registro:", error);
+      Toastify({
+        text: "Error al crear la cuenta. Inténtalo de nuevo.",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        close: true,
+        style: {
+          background: "linear-gradient(135deg, #e74c3c, #c0392b)",
+        },
+      }).showToast();
+    }
+  });
 };
 
 document.addEventListener("DOMContentLoaded", main);

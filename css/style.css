@@ -1,46 +1,17 @@
 :root {
-  /* Paleta Premium: Tonos etéreos */
-  --color-bg-1: #f3e7e9;
-  --color-bg-2: #e3eeff;
-  --color-bg-3: #e3f2fd;
-
-  --color-blanco-glass: rgba(255, 255, 255, 0.85);
-  --color-borde-glass: rgba(255, 255, 255, 0.5);
-
+  /* Variables de Color (Paleta Premium) */
   --color-primario: #6c5ce7;
-  --color-primario-oscuro: #5649c0;
+  --color-secundario: #a29bfe;
+  --color-fondo: #f5f6fa;
   --color-texto: #2d3436;
-  --color-texto-suave: #636e72;
-  --color-error: #e74c3c;
+  --color-blanco: #ffffff;
+  --color-borde: #dfe6e9;
+  --sombra-suave: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-borde: 1px solid rgba(255, 255, 255, 0.5);
 
-  --sombra-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-  --radio-borde: 16px;
-  --fuente-principal: "Segoe UI", system-ui, sans-serif;
-}
-
-/* Animación de entrada: Fade In + Slide Up */
-@keyframes aparecerSuave {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Animación de fondo sutil */
-@keyframes moverFondo {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  /* Tipografía */
+  --fuente-principal: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 * {
@@ -52,182 +23,188 @@
 body {
   font-family: var(--fuente-principal);
   color: var(--color-texto);
-  /* Fondo con gradiente animado sutil */
-  background: linear-gradient(
-    -45deg,
-    var(--color-bg-1),
-    var(--color-bg-2),
-    var(--color-bg-3),
-    #fff
-  );
-  background-size: 400% 400%;
-  animation: moverFondo 15s ease infinite;
+  background-color: var(--color-fondo);
+  /* Imagen de fondo solicitada */
+  background-image: url("../assets/img/fondo1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   min-height: 100vh;
+}
+
+/* =========================================
+   LAYOUT PRINCIPAL (Estructura General)
+   ========================================= */
+
+/* Estilo para el header de navegación */
+.encabezado {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: var(--glass-borde);
+  padding: 0.8rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--sombra-suave);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
-/* Contenedor principal que centra el formulario */
-.contenedor-acceso {
-  width: 100%;
-  padding: 20px;
+.encabezado__logo {
+  height: 90px; /* Ajusta según el tamaño de tu logo */
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.encabezado__logo:hover {
+  transform: scale(1.05);
+}
+
+/* Navegación usando Flexbox para alinear items */
+.navegacion__lista {
   display: flex;
-  justify-content: center;
+  list-style: none;
+  justify-content: flex-end; /* Alineados a la derecha */
+  gap: 2rem;
 }
 
-/* Glassmorphism Card */
-.formulario-acceso {
-  background: var(--color-blanco-glass);
-  backdrop-filter: blur(8px); /* Efecto cristal */
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--color-borde-glass);
-  box-shadow: var(--sombra-glass);
-
-  border-radius: var(--radio-borde);
-  padding: 3rem;
-  width: 100%;
-  max-width: 420px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-
-  /* Aplicamos la animación de entrada */
-  animation: aparecerSuave 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-.formulario-acceso__titulo {
-  font-size: 2rem;
-  color: var(--color-primario);
-  text-align: center;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  letter-spacing: -0.5px;
-}
-
-.formulario-acceso__campo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  position: relative;
-}
-
-.formulario-acceso__etiqueta {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-texto-suave);
-  margin-left: 4px;
-  transition: color 0.3s;
-}
-
-/* Wrapper para posicionar el icono */
-.input-con-icono {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.icono-input {
-  position: absolute;
-  left: 12px;
-  color: var(--color-texto-suave);
-  font-size: 1.2rem;
-  pointer-events: none; /* Para que el click pase al input */
-  transition: color 0.3s;
-}
-
-.formulario-acceso__input {
-  width: 100%;
-  padding: 1rem 1rem 1rem 2.8rem; /* Espacio a la izquierda para el icono */
-  border: 2px solid transparent;
-  background-color: #f0f3f7;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  outline: none;
+.navegacion__enlace {
+  text-decoration: none;
   color: var(--color-texto);
-}
-
-/* Efecto focus sofisticado */
-.formulario-acceso__input:focus {
-  background-color: #fff;
-  border-color: var(--color-primario);
-  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.1);
-  transform: translateY(-2px);
-}
-
-.formulario-acceso__input:focus + .icono-input,
-.input-con-icono:focus-within .icono-input {
-  color: var(--color-primario);
-}
-
-.formulario-acceso__input:focus + .formulario-acceso__etiqueta {
-  color: var(--color-primario);
-}
-
-/* Botón Principal con gradiente */
-.formulario-acceso__boton {
-  margin-top: 1rem;
-  padding: 1rem;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(
-    135deg,
-    var(--color-primario) 0%,
-    var(--color-primario-oscuro) 100%
-  );
-  color: white;
-  font-size: 1.05rem;
   font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
 }
 
-.formulario-acceso__boton:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
-}
-
-.formulario-acceso__boton:active {
-  transform: translateY(-1px);
-}
-
-/* Botón Secundario (Outline) */
-.formulario-acceso__boton--secundario {
-  background: transparent;
-  border: 2px solid var(--color-primario);
+.navegacion__enlace:hover {
   color: var(--color-primario);
-  box-shadow: none;
-  margin-top: 0;
 }
 
-.formulario-acceso__boton--secundario:hover {
-  background-color: rgba(108, 92, 231, 0.05);
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(108, 92, 231, 0.1);
+/* Contenedor principal del contenido */
+.contenedor-principal {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
-.formulario-acceso__error {
+/* Pie de página */
+.pie-pagina {
+  background: var(--color-texto);
+  color: var(--color-blanco);
   text-align: center;
-  color: var(--color-error);
+  padding: 2rem;
+  margin-top: auto; /* Empuja el footer al fondo si hay poco contenido */
+}
+
+/* =========================================
+   GRID DE PRODUCTOS (CSS Grid)
+   ========================================= */
+
+.productos-grid {
+  display: grid;
+  /* Grid responsivo: columnas automáticas de mínimo 280px */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+/* =========================================
+   TARJETA DE PRODUCTO (Componente BEM)
+   ========================================= */
+
+.tarjeta-producto {
+  background: var(--glass-bg);
+  backdrop-filter: blur(5px);
+  border: var(--glass-borde);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex; /* Flex columna para organizar contenido interno */
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--sombra-suave);
+}
+
+.tarjeta-producto:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.tarjeta-producto__imagen-contenedor {
+  width: 100%;
+  height: 200px; /* Altura fija para uniformidad */
+  overflow: hidden;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tarjeta-producto__imagen {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Asegura que la imagen se vea completa */
+  transition: transform 0.3s ease;
+}
+
+.tarjeta-producto:hover .tarjeta-producto__imagen {
+  transform: scale(1.05);
+}
+
+.tarjeta-producto__info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Ocupa el espacio restante */
+}
+
+.tarjeta-producto__titulo {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-texto);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Puntos suspensivos si es muy largo */
+}
+
+.tarjeta-producto__categoria {
   font-size: 0.9rem;
-  margin-top: -0.5rem;
+  color: #636e72;
+  margin-bottom: 1rem;
+  text-transform: capitalize;
+  background-color: rgba(108, 92, 231, 0.1);
+  width: fit-content;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.tarjeta-producto__precio {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-primario);
+  margin-top: auto; /* Empuja el precio hacia abajo antes del botón */
+  margin-bottom: 1rem;
+}
+
+.tarjeta-producto__boton {
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
   font-weight: 600;
-  min-height: 20px;
-
-  /* Animación shake si aparece error */
-  animation: aparecerSuave 0.3s ease;
+  transition: background-color 0.3s ease;
+  width: 100%;
 }
 
-/* Responsive básico para móvil */
-@media (max-width: 576px) {
-  .formulario-acceso {
-    padding: 2rem;
-    width: 100%;
-  }
-
-  .formulario-acceso__titulo {
-    font-size: 1.7rem;
-  }
+.tarjeta-producto__boton:hover {
+  background-color: var(--color-secundario);
 }
+
+/* =========================================
+   LOGIN / REGISTRO
+   Los estilos específicos se han movido a css/style_login.css
+   ========================================= */

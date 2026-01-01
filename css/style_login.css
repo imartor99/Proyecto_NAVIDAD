@@ -1,0 +1,209 @@
+/* =========================================
+   ESTILOS ESPECÍFICOS PARA LOGIN Y REGISTRO
+   ========================================= */
+
+/* 
+   IMPORTANTE: Este archivo depende de las variables definidas en style.css 
+   (como --glass-bg, --color-primario, etc.)
+*/
+
+/* Contenedor principal que centra el formulario */
+.contenedor-acceso {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centrado vertical */
+  min-height: 100vh; /* Ocupa todo el alto en la página de login */
+
+  /* 
+     PERSPECTIVA 3D:
+     La propiedad 'perspective' define la profundidad del espacio 3D.
+     Un valor menor (ej. 500px) hace el efecto más drástico, 
+     mientras que un valor mayor (ej. 1000px) lo hace más sutil y realista.
+     Es esencial para que la rotación de la tarjeta se vea tridimensional.
+  */
+  perspective: 1000px;
+}
+
+/* =========================================
+   ANIMACIÓN FLIP CARD (Tarjeta Giratoria)
+   ========================================= */
+
+/* Contenedor de la tarjeta flip */
+.tarjeta-flip {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  min-height: 750px; /* Altura aumentada para acomodar el logo y campos extra */
+
+  /* 
+     PRESERVE-3D:
+     Indica que los elementos hijos (.tarjeta-flip__cara) deben conservar 
+     su posición en el espacio 3D, en lugar de aplanarse contra el contenedor.
+     Sin esto, el efecto de "cara de atrás" no funcionaría.
+  */
+  transform-style: preserve-3d;
+
+  /* 
+     TRANSICIÓN:
+     Controla la animación de la rotación.
+     - transform: la propiedad a animar.
+     - 0.8s: duración.
+     - cubic-bezier: curva de aceleración personalizada para un movimiento más natural (rápido al inicio, suave al final).
+  */
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Clase que activa la rotación */
+.tarjeta-flip.volteada {
+  /* Rota el contenedor 180 grados en el eje Y, mostrando la cara trasera */
+  transform: rotateY(180deg);
+}
+
+/* Estilos comunes para ambas caras */
+.tarjeta-flip__cara {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  /* 
+     BACKFACE-VISIBILITY:
+     Oculta la "parte de atrás" del elemento cuando está girado.
+     Es crucial: cuando la tarjeta rota 180º, queremos ver la otra cara, 
+     no el reverso de la cara actual.
+  */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* Compatibilidad Safari */
+}
+
+/* Cara Frontal (Login) */
+.tarjeta-flip__cara--frontal {
+  /* Posición inicial: 0 grados */
+  transform: rotateY(0deg);
+  z-index: 2; /* Asegura que esté por encima inicialmente */
+}
+
+/* Cara Trasera (Registro) */
+.tarjeta-flip__cara--trasera {
+  /* Posición inicial: ya rotada 180 grados. 
+     Así, cuando el padre rota 180, esta cara queda en 360 (0), mostrándose al frente. */
+  transform: rotateY(180deg);
+  z-index: 1;
+}
+
+/* =========================================
+   ESTÉTICA GLASSMORPHISM (Cristal Esmerilado)
+   ========================================= */
+
+.formulario-acceso {
+  /* Fondo semitransparente */
+  background: rgba(255, 255, 255, 0.75);
+
+  /* 
+     BACKDROP-FILTER:
+     Aplica efectos gráficos (como desenfoque) al área detrás del elemento.
+     Esto crea el efecto de "cristal esmerilado".
+  */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border-radius: 20px;
+  padding: 3rem;
+
+  /* Borde sutil semitransparente para simular el grosor del cristal */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  /* Sombra suave para dar elevación */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+  width: 100%;
+}
+
+.formulario-acceso__logo {
+  display: block;
+  max-width: 120px; /* Ajusta el tamaño aquí */
+  margin: 0 auto 1rem auto; /* Centrado y con margen inferior */
+  height: auto;
+}
+
+.formulario-acceso__titulo {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--color-texto);
+  font-size: 1.8rem;
+}
+
+.formulario-acceso__campo {
+  margin-bottom: 1.5rem;
+}
+
+.formulario-acceso__etiqueta {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--color-texto);
+}
+
+.input-con-icono {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icono-input {
+  position: absolute;
+  left: 10px;
+  color: #636e72;
+}
+
+.formulario-acceso__input {
+  width: 100%;
+  padding: 0.8rem 0.8rem 0.8rem 2.5rem; /* Padding extra para el icono */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  background: #f0f2f5;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+/* ANIMACIÓN DE FOCO */
+.formulario-acceso__input:focus {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: var(--color-primario);
+  /* Sombra de resplandor al enfocar */
+  box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+}
+
+.formulario-acceso__boton {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.formulario-acceso__boton:hover {
+  background-color: var(--color-secundario);
+  /* Pequeña elevación al pasar el mouse */
+  transform: translateY(-2px);
+}
+
+.formulario-acceso__boton--secundario {
+  background-color: transparent;
+  border: 2px solid var(--color-primario);
+  color: var(--color-primario);
+}
+
+.formulario-acceso__boton--secundario:hover {
+  background-color: var(--color-primario);
+  color: white;
+}
