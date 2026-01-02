@@ -1,8 +1,13 @@
 import { consultarAPI } from "./api.js";
+
 // URL del endpoint de usuarios en nuestro json-server
 const USERS_URL = "http://localhost:3000/users";
+
 /**
  * Trae todos los usuarios y busca cual coincide en el array.
+ * @param {string} emailInput - El email del usuario
+ * @param {string} passwordInput - La contraseña del usuario
+ * @returns {Object | null} - El usuario encontrado o null si no se encuentra
  */
 export async function validarCredenciales(emailInput, passwordInput) {
   try {
@@ -30,6 +35,7 @@ export async function validarCredenciales(emailInput, passwordInput) {
 
 /**
  * Genera un CAPTCHA matemático simple y devuelve la pregunta y resultado.
+ * @returns {Object} - Un objeto con la pregunta y el resultado
  */
 export function generarCaptcha() {
   const num1 = Math.floor(Math.random() * 10) + 1;
@@ -52,4 +58,41 @@ export function mostrarCaptcha(elementoId = "preguntaCaptcha") {
     elemento.textContent = captcha.pregunta;
   }
   return captcha.resultado;
+}
+
+/**
+ * Verifica si hay usuario en sesión sin redirigir.
+ * @returns {Object | null} - El usuario logueado o null
+ */
+export function obtenerUsuario() {
+  const usuario = localStorage.getItem("usuarioLogueado");
+  if (usuario) {
+    return JSON.parse(usuario);
+  }
+  return null;
+}
+
+/**
+ * Funcion que verifica si el usuario esta logueado
+ * Si no lo está, redirige al login. Esto lo haremos al intentar hacer una compra.
+ * @returns {Object | null} - El usuario logueado o null si no hay
+ */
+export function verificarLogin() {
+  const usuario = obtenerUsuario();
+  if (!usuario) {
+    // Si NO hay usuario guardado, redirigir a login
+    // alert('Debes iniciar sesión primero'); // Comentado para ser menos invasivo en checks automáticos
+    window.location.href = "login.html";
+    return null;
+  }
+  return usuario;
+}
+
+/**
+ * Función para cerrar sesión borrando al usuario del localStorage si existe
+ * @returns {void}
+ */
+export function cerrarSesion() {
+  localStorage.removeItem("usuarioLogueado");
+  window.location.href = "login.html";
 }
