@@ -4,10 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="assets/img/logo_fondo.png" type="image/x-icon" />
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome (Para iconos de redes sociales) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Toastify CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <link rel="stylesheet" href="css/style.css" />
     <title>Home - ProtoShop</title>
   </head>
   <body>
+    <!-- Encabezado con logo y navegación -->
     <header class="encabezado">
       <a href="index.html" class="logo-enlace">
         <img
@@ -19,27 +36,169 @@
       <nav class="navegacion">
         <ul class="navegacion__lista">
           <li class="navegacion__item">
-            <a href="index.html" class="navegacion__enlace">Home</a>
+            <a href="index.html" class="navegacion__enlace">
+              <span class="material-icons">home</span> Home
+            </a>
           </li>
           <li class="navegacion__item">
-            <a href="login.html" class="navegacion__enlace">Login</a>
-          </li>
-          <li class="navegacion__item">
-            <a href="nosotros.html" class="navegacion__enlace"
-              >Sobre Nosotros</a
+            <a
+              href="login.html"
+              class="navegacion__enlace"
+              id="btn-login-logout"
             >
+              <span class="material-icons">login</span> Login
+            </a>
+          </li>
+          <li class="navegacion__item">
+            <a href="nosotros.html" class="navegacion__enlace">
+              <span class="material-icons">group</span> Sobre Nosotros
+            </a>
+          </li>
+          <li class="navegacion__item">
+            <a href="#" class="navegacion__enlace" id="btn-carrito">
+              <span class="material-icons">shopping_cart</span>
+              <span id="contador-carrito" class="contador-carrito">0</span>
+            </a>
           </li>
         </ul>
       </nav>
     </header>
+
     <main class="contenedor-principal">
+      <!-- Sección de Filtros -->
+      <section class="filtros">
+        <!-- Grupo 1: Categoría -->
+        <div class="filtros__grupo">
+          <label for="filtro-categoria" class="filtros__etiqueta"
+            >Categoría</label
+          >
+          <select id="filtro-categoria" class="filtros__input">
+            <option value="">Todas</option>
+            <!-- Se llenará dinámicamente -->
+          </select>
+        </div>
+
+        <!-- Grupo 2: Atributo + Valor -->
+        <div class="filtros__grupo">
+          <label for="filtro-atributo" class="filtros__etiqueta"
+            >Filtrar por</label
+          >
+          <select id="filtro-atributo" class="filtros__input">
+            <option value="price">Precio menor que</option>
+            <option value="rate">Rating menor que</option>
+            <option value="rate-higher">Rating mayor que</option>
+          </select>
+        </div>
+
+        <div class="filtros__grupo">
+          <label for="filtro-valor" class="filtros__etiqueta">Valor</label>
+          <input
+            type="number"
+            id="filtro-valor"
+            class="filtros__input"
+            placeholder="Ej: 100"
+          />
+        </div>
+
+        <!-- Grupo 3: Ordenación -->
+        <div class="filtros__grupo">
+          <label for="filtro-orden" class="filtros__etiqueta"
+            >Ordenar por</label
+          >
+          <select id="filtro-orden" class="filtros__input">
+            <option value="defecto">Defecto</option>
+            <option value="precio-asc">Precio: Menor a Mayor</option>
+            <option value="precio-desc">Precio: Mayor a Menor</option>
+            <option value="nombre-asc">Nombre: A-Z</option>
+            <option value="nombre-desc">Nombre: Z-A</option>
+          </select>
+        </div>
+
+        <button id="btn-limpiar-filtros" class="filtros__boton">Limpiar</button>
+      </section>
+
+      <!-- Contenedor de los productos -->
       <section id="contenedor" class="productos-grid"></section>
+
+      <!-- Centinela para el Intersection Observer del scroll infinito -->
+      <div id="sentinel" style="height: 1px; width: 100%"></div>
     </main>
+
     <footer class="pie-pagina">
+      <div class="pie-pagina__sociales">
+        <a href="#" class="social-icon"
+          ><i class="fa-brands fa-instagram"></i
+        ></a>
+        <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#" class="social-icon"
+          ><i class="fa-brands fa-facebook-f"></i
+        ></a>
+        <a href="#" class="social-icon"><i class="fa-brands fa-tiktok"></i></a>
+      </div>
       <p class="pie-pagina__texto">
         &copy; 2025 ProtoShop. Todos los derechos reservados.
       </p>
     </footer>
+
+    <!-- Modal de Detalle de Producto -->
+    <dialog id="modal-producto" class="modal">
+      <div class="modal__contenido">
+        <button id="btn-cerrar-modal" class="modal__cerrar">&times;</button>
+        <div class="modal__grid">
+          <div class="modal__imagen-box">
+            <img id="modal-img" src="" alt="" class="modal__imagen" />
+          </div>
+          <div class="modal__info">
+            <h2 id="modal-titulo" class="modal__titulo"></h2>
+            <div class="modal__meta">
+              <span id="modal-categoria" class="modal__tag"></span>
+              <span
+                id="modal-marca"
+                class="modal__tag modal__tag--marca"
+              ></span>
+            </div>
+            <div class="modal__precio-container">
+              <p id="modal-precio" class="modal__precio"></p>
+              <span id="modal-descuento" class="modal__descuento"></span>
+            </div>
+
+            <div class="modal__rating">
+              <span id="modal-estrellas" class="material-icons">star</span>
+              <span id="modal-puntuacion"></span>
+              <span id="modal-votos" class="modal__votos"></span>
+            </div>
+            <p id="modal-desc" class="modal__descripcion"></p>
+
+            <!-- Detalles Extra -->
+            <div class="modal__extra-info">
+              <p><strong>Stock:</strong> <span id="modal-stock"></span></p>
+              <p><strong>SKU:</strong> <span id="modal-sku"></span></p>
+              <p><strong>Peso:</strong> <span id="modal-peso"></span></p>
+              <p>
+                <strong>Dimensiones:</strong>
+                <span id="modal-dimensiones"></span>
+              </p>
+              <p>
+                <strong>Garantía:</strong> <span id="modal-garantia"></span>
+              </p>
+              <p><strong>Envío:</strong> <span id="modal-envio"></span></p>
+              <p>
+                <strong>Devolución:</strong> <span id="modal-devolucion"></span>
+              </p>
+            </div>
+            <div class="modal__acciones">
+              <button class="modal__boton-accion">Añadir al Carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Toastify JS -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
     <script type="module" src="js/main_index.js"></script>
   </body>
 </html>

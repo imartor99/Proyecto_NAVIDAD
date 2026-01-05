@@ -2,10 +2,6 @@
    ESTILOS ESPECÍFICOS PARA LOGIN Y REGISTRO
    ========================================= */
 
-/* 
-   IMPORTANTE: Este archivo depende de las variables definidas en style.css 
-   (como --glass-bg, --color-primario, etc.)
-*/
 
 /* Contenedor principal que centra el formulario */
 .contenedor-acceso {
@@ -13,17 +9,9 @@
   padding: 20px;
   display: flex;
   justify-content: center;
-  align-items: center; /* Centrado vertical */
-  min-height: 100vh; /* Ocupa todo el alto en la página de login */
-
-  /* 
-     PERSPECTIVA 3D:
-     La propiedad 'perspective' define la profundidad del espacio 3D.
-     Un valor menor (ej. 500px) hace el efecto más drástico, 
-     mientras que un valor mayor (ej. 1000px) lo hace más sutil y realista.
-     Es esencial para que la rotación de la tarjeta se vea tridimensional.
-  */
-  perspective: 1000px;
+  align-items: center; 
+  min-height: 100vh; 
+  perspective: 1000px; /* Para la animación 3D */
 }
 
 /* =========================================
@@ -35,24 +23,9 @@
   width: 100%;
   max-width: 420px;
   position: relative;
-  min-height: 750px; /* Altura aumentada para acomodar el logo y campos extra */
-
-  /* 
-     PRESERVE-3D:
-     Indica que los elementos hijos (.tarjeta-flip__cara) deben conservar 
-     su posición en el espacio 3D, en lugar de aplanarse contra el contenedor.
-     Sin esto, el efecto de "cara de atrás" no funcionaría.
-  */
-  transform-style: preserve-3d;
-
-  /* 
-     TRANSICIÓN:
-     Controla la animación de la rotación.
-     - transform: la propiedad a animar.
-     - 0.8s: duración.
-     - cubic-bezier: curva de aceleración personalizada para un movimiento más natural (rápido al inicio, suave al final).
-  */
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 750px; 
+  transform-style: preserve-3d; /* Conserva la posición en el espacio 3D */
+  transition: transform 0.8s ease;
 }
 
 /* Clase que activa la rotación */
@@ -64,18 +37,13 @@
 /* Estilos comunes para ambas caras */
 .tarjeta-flip__cara {
   width: 100%;
+  height: 100%; 
   position: absolute;
   top: 0;
   left: 0;
-
-  /* 
-     BACKFACE-VISIBILITY:
-     Oculta la "parte de atrás" del elemento cuando está girado.
-     Es crucial: cuando la tarjeta rota 180º, queremos ver la otra cara, 
-     no el reverso de la cara actual.
-  */
+  /* Oculta la "parte de atrás" del elemento cuando está girado */
   backface-visibility: hidden;
-  -webkit-backface-visibility: hidden; /* Compatibilidad Safari */
+  -webkit-backface-visibility: hidden; 
 }
 
 /* Cara Frontal (Login) */
@@ -94,37 +62,29 @@
 }
 
 /* =========================================
-   ESTÉTICA GLASSMORPHISM (Cristal Esmerilado)
+   ESTILOS FORMULARIO
    ========================================= */
 
 .formulario-acceso {
-  /* Fondo semitransparente */
   background: rgba(255, 255, 255, 0.75);
-
-  /* 
-     BACKDROP-FILTER:
-     Aplica efectos gráficos (como desenfoque) al área detrás del elemento.
-     Esto crea el efecto de "cristal esmerilado".
-  */
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px); /* Desenfoca el área detrás del elemento */
   -webkit-backdrop-filter: blur(8px);
-
   border-radius: 20px;
   padding: 3rem;
-
-  /* Borde sutil semitransparente para simular el grosor del cristal */
   border: 1px solid rgba(255, 255, 255, 0.3);
-
-  /* Sombra suave para dar elevación */
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 
   width: 100%;
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .formulario-acceso__logo {
   display: block;
-  max-width: 120px; /* Ajusta el tamaño aquí */
-  margin: 0 auto 1rem auto; /* Centrado y con margen inferior */
+  max-width: 120px;
+  margin: 0 auto 1rem auto;
   height: auto;
 }
 
@@ -160,7 +120,7 @@
 
 .formulario-acceso__input {
   width: 100%;
-  padding: 0.8rem 0.8rem 0.8rem 2.5rem; /* Padding extra para el icono */
+  padding: 0.8rem 0.8rem 0.8rem 2.5rem;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 8px;
   background: #f0f2f5;
@@ -173,7 +133,6 @@
 .formulario-acceso__input:focus {
   background: rgba(255, 255, 255, 0.8);
   border-color: var(--color-primario);
-  /* Sombra de resplandor al enfocar */
   box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
 }
 
@@ -193,7 +152,6 @@
 
 .formulario-acceso__boton:hover {
   background-color: var(--color-secundario);
-  /* Pequeña elevación al pasar el mouse */
   transform: translateY(-2px);
 }
 
