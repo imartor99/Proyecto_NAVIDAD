@@ -1,6 +1,17 @@
+//============ CREACION DE CARDS ============
+
+/**
+ * Crea una card por producto y devuelve el elemento DOM
+ * @param {Object} producto - El producto a mostrar
+ * @returns {HTMLElement} - La card creada
+ */
 export function crearCard(producto) {
   const card = document.createElement("div");
   card.classList.add("tarjeta-producto");
+
+  // Añadimos evento click para abrir el modal
+  card.addEventListener("click", () => abrirModal(producto));
+  card.style.cursor = "pointer"; // Indicador visual de clic
 
   card.innerHTML = `
         <div class="tarjeta-producto__imagen-contenedor">
@@ -10,21 +21,226 @@ export function crearCard(producto) {
             <h2 class="tarjeta-producto__titulo">${producto.title}</h2>
             <p class="tarjeta-producto__categoria">${producto.category}</p>
             <p class="tarjeta-producto__precio">$${producto.price}</p>
-            <button class="tarjeta-producto__boton">Añadir al Carrito</button>
+            <button class="tarjeta-producto__boton btn-add-cart">Añadir al Carrito</button>
         </div>
     `;
+
+  // Listener para el botón de Añadir al Carrito (evitando que abra el modal)
+  const btnAdd = card.querySelector(".btn-add-cart");
+  btnAdd.addEventListener("click", (e) => {
+    e.stopPropagation(); // Evitar que se abra el modal
+
+    // Verifico si el usuario está logueado
+    const usuario = localStorage.getItem("usuarioLogueado");
+    if (!usuario) {
+      mostrarNotificacion("Inicia sesión para comprar", "red");
+      setTimeout(() => (window.location.href = "login.html"), 1000);
+      return;
+    }
+
+    mostrarNotificacion("Producto añadido (Simulado)", "green");
+  });
 
   return card;
 }
 
-export function crearCards(arrPersonajes) {
+/**
+ * Renderiza un array de productos en el contenedor principal.
+ * @param {Array} productos
+ * @param {boolean} limpiar Si es true, vacía el contenedor antes de añadir.
+ */
+export function crearCards(productos, limpiar = false) {
   const contenedor = document.getElementById("contenedor");
+  if (!contenedor) return;
+
   contenedor.classList.add("cards");
 
-  contenedor.innerHTML = "";
-  arrPersonajes.forEach((personaje) => {
-    const card = crearCard(personaje);
+  if (limpiar) {
+    contenedor.innerHTML = "";
+  }
 
+  productos.forEach((p) => {
+    const card = crearCard(p);
     contenedor.appendChild(card);
   });
+}
+
+//============ MODAL DETALLE PRODUCTO ============
+
+/**
+ * Abre el modal con la información detallada del producto
+ */
+export function abrirModal(producto) {
+  const modal = document.getElementById("modal-producto");
+  if (!modal) return;
+
+  // Llenar datos
+  document.getElementById("modal-img").src = producto.thumbnail;
+  document.getElementById("modal-titulo").textContent = producto.title;
+  document.getElementById("modal-categoria").textContent = producto.category;
+  document.getElementById("modal-marca").textContent =
+    producto.brand || "Genérico";
+  // Precio y Descuento
+  document.getElementById("modal-precio").textContent = `$${producto.price}`;
+  const descuento = document.getElementById("modal-descuento");
+  if (producto.discountPercentage) {
+    descuento.textContent = `-${producto.discountPercentage}%`;
+    descuento.style.display = "inline-block";
+  } else {
+    descuento.style.display = "none";
+  }
+  // Descripcion
+  document.getElementById("modal-desc").textContent = producto.description;
+
+  // Detalles Extra (Validando si existen propiedades, sino muestro un texto genérico)
+  document.getElementById("modal-stock").textContent = producto.stock
+    ? `${producto.stock} unidades`
+    : "Consultar";
+  document.getElementById("modal-stock").style.color =
+    producto.stock && producto.stock < 10 ? "red" : "green";
+
+  document.getElementById("modal-sku").textContent =
+    producto.sku || `#${producto.id}`; //si no existe sku, muestro el id como referencia del producto
+
+  // Peso y Dimensiones
+  document.getElementById("modal-peso").textContent = producto.weight
+    ? `${producto.weight} kg`
+    : "N/A";
+
+  if (producto.dimensions) {
+    const { width, height, depth } = producto.dimensions;//almacenamos cada propiedad de dimensions en una variable
+    document.getElementById(
+      "modal-dimensiones"
+    ).textContent = `${width} x ${height} x ${depth} cm`;
+  } else {
+    document.getElementById("modal-dimensiones").textContent = "N/A";
+  }
+
+  document.getElementById("modal-garantia").textContent =
+    producto.warrantyInformation || "Garantía Estándar 2 años";
+  document.getElementById("modal-envio").textContent =
+    producto.shippingInformation || "Envío en 3-5 días";
+  document.getElementById("modal-devolucion").textContent =
+    producto.returnPolicy || "30 días de devolución";
+
+  // Rating
+  document.getElementById("modal-puntuacion").textContent = producto.rating;
+  document.getElementById("modal-votos").textContent = `(${
+    Math.floor(Math.random() * 500) + 50
+  } votos)`; // Simulado ya que la api solo muestra 3 reviews pero no cuadra con el rating
+
+  // Cerrar modal
+  const btnCerrar = document.getElementById("btn-cerrar-modal");
+  btnCerrar.onclick = () => modal.close();
+
+  // Cerrar al hacer click fuera (en el backdrop)
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.close();
+  };
+
+  // Mostrar modal al hacer click en la tarjeta
+  modal.showModal();
+}
+
+//============ NOTIFICACIONES CON TOAST ============
+
+/**
+ * Muestra un mensaje Toast
+ */
+export function mostrarNotificacion(texto, color = "#f1c40f") {
+  if (typeof Toastify !== "undefined") {
+    Toastify({
+      text: texto,
+      duration: 1000,
+      gravity: "bottom",
+      position: "center",
+      style: {
+        background: color,
+        borderRadius: "20px",
+        color: color === "#f1c40f" ? "black" : "white",
+      },
+      stopOnFocus: false,
+    }).showToast();
+  }
+}
+
+//============ FILTROS ============
+
+/**
+ * Llena un elemento select con opciones.
+ * @param {string} idSelect ID del elemento select
+ * @param {Array} opciones Array de strings con los valores
+ */
+export function llenarSelectCategorias(idSelect, opciones) {
+  const select = document.getElementById(idSelect);
+  if (!select) return;
+
+  // Mantener la opción por defecto
+  select.innerHTML = '<option value="">Todas</option>';
+
+  opciones.forEach((op) => {
+    const item = document.createElement("option");
+    item.value = op;
+    item.textContent = op
+      .replace(/-/g, " ") //Quito guiones
+      .replace(/\b\w/g, (l) => l.toUpperCase()); //Mayuscula inicial
+    select.appendChild(item);
+  });
+}
+
+/**
+ * Lógica pura de filtrado por atributo/valor.
+ * @param {Array} productos Array de productos
+ * @param {Object} obFiltro Objeto con el atributo y valor de filtro
+ * @returns {Array} Array de productos filtrados
+ */
+export function filtrarProductos(productos, obFiltro) {
+  const { atributo, valor } = obFiltro;
+
+  if (valor === "" || valor === null || isNaN(valor)) {
+    return productos;
+  }
+
+  return productos.filter((producto) => {
+    if (atributo === "price") {
+      return producto.price < valor;
+    } else if (atributo === "rate") {
+      return producto.rating.rate < valor;
+    } else if (atributo === "rate-higher") {
+      return producto.rating.rate >= valor;
+    } else if (atributo === "count") {
+      return producto.rating.count < valor;
+    }
+    return true; // Si no se cumple ninguna condición, se mantiene el producto igualmente para evitar undefined
+  });
+}
+
+//============ SCROLL INFINITO ============
+
+/**
+ * Configura el IntersectionObserver para el scroll infinito.
+ * @param {string} idElemento ID del centinela
+ * @param {Function} callback Función a ejecutar cuando se intersecta
+ * @returns {IntersectionObserver} La instancia del observer
+ */
+export function configurarObserver(idElemento, callback) {
+  const sentinel = document.getElementById(idElemento);
+  if (!sentinel) return null;
+
+  const opciones = {
+    root: null, //Vigila la pantalla del navegador
+    rootMargin: "0px 0px -40px 0px", // Margen de 40px desde el final de la pantalla para controlar cuando se dispara el evento
+    threshold: 1.0, // solo cuando el centinela entre en la pantalla al 100%
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        callback();
+      }
+    });
+  }, opciones);
+
+  observer.observe(sentinel);
+  return observer;
 }
