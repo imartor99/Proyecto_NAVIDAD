@@ -279,3 +279,90 @@ export function configurarObserver(idElemento, callback) {
   observer.observe(sentinel);
   return observer;
 }
+
+//============ LOGICA MODAL CARRITO ============
+
+/**
+ * Configura la lógica del modal del carrito (listeners, renderizado, vaciar).
+ * Recibe la instancia del carrito desde el main_index.js
+ * @param {Object} carrito Instancia de la clase Carrito
+ */
+export function ConfigurarModalCarrito(carrito) {
+  const btnCarrito = document.getElementById("btn-carrito");
+  const modalCarrito = document.getElementById("modal-carrito");
+  const btnCerrarCarrito = document.getElementById("btn-cerrar-carrito");
+  const carritoBody = document.getElementById("carrito-body");
+  const totalPrecio = document.getElementById("carrito-total-precio");
+
+  if (!btnCarrito || !modalCarrito || !carritoBody) return;
+
+  // Función interna para refrescar el contenido
+  const refrescarModal = () => {
+    // Renderizado
+    carritoBody.innerHTML = "";
+    carritoBody.appendChild(carrito.dibujarCarrito());
+    totalPrecio.textContent = `$${carrito.calcularTotal()}`;
+
+    // Asignación de Listeners a botones internos
+    // Botones SUMAR (+)
+    carritoBody.querySelectorAll(".btn-sumar").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const id = parseInt(e.currentTarget.dataset.id);
+        const producto = carrito.articulos.find((p) => p.id === id);
+        if (producto) {
+          carrito.add(producto);
+          refrescarModal(); // Recursividad para actualizar vista
+        }
+      });
+    });
+
+    // Botones RESTAR (-)
+    carritoBody.querySelectorAll(".btn-restar").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const id = parseInt(e.currentTarget.dataset.id);
+        carrito.restar(id);
+        refrescarModal();
+      });
+    });
+
+    // Botones ELIMINAR (Papelera)
+    carritoBody.querySelectorAll(".btn-eliminar").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const id = parseInt(e.currentTarget.dataset.id);
+        carrito.eliminar(id);
+        refrescarModal();
+      });
+    });
+
+    // Botón VACIAR CARRITO
+    const btnVaciar = carritoBody.querySelector(".btn-vaciar");
+    if (btnVaciar) {
+      btnVaciar.addEventListener("click", () => {
+        if (confirm("¿Estás seguro de que quieres vaciar el carrito?")) {
+          carrito.vaciar();
+          refrescarModal();
+        }
+      });
+    }
+  };
+
+  // Abrir Carrito
+  btnCarrito.addEventListener("click", (e) => {
+    e.preventDefault();
+    refrescarModal();
+    modalCarrito.showModal();
+  });
+
+  // Cerrar Carrito, Cierra modal
+  const cerrarModal = () => {
+    modalCarrito.close();
+  };
+  btnCerrarCarrito.addEventListener("click", cerrarModal);
+
+  // Cerrar al hacer click fuera
+  modalCarrito.addEventListener("click", (e) => {
+    if (e.target === modalCarrito) {
+      modalCarrito.close();
+    }
+  });
+}

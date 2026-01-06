@@ -6,6 +6,7 @@ import {
   filtrarProductos,
   configurarObserver,
   mostrarNotificacion,
+  ConfigurarModalCarrito,
 } from "./dom.js";
 import { Carrito } from "./Carrito.js";
 
@@ -171,82 +172,8 @@ const main = async () => {
       }
     }
 
-    // Configuración MODAL CARRITO
-    const btnCarrito = document.getElementById("btn-carrito");
-    const modalCarrito = document.getElementById("modal-carrito");
-    const btnCerrarCarrito = document.getElementById("btn-cerrar-carrito");
-    const carritoBody = document.getElementById("carrito-body");
-    const totalPrecio = document.getElementById("carrito-total-precio");
-
-    // CARRITO
-    // Función central de control del carrito
-    const refrescarModalCarrito = () => {
-      // Renderizado
-      carritoBody.innerHTML = "";
-      carritoBody.appendChild(carrito.dibujarCarrito()); 
-      totalPrecio.textContent = `$${carrito.calcularTotal()}`;
-
-      // Asignación de Listeners a botones internos
-
-      // Botones SUMAR (+)
-      carritoBody.querySelectorAll(".btn-sumar").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const id = parseInt(e.currentTarget.dataset.id);
-          const producto = carrito.articulos.find((p) => p.id === id);
-          if (producto) {
-            carrito.add(producto);
-            refrescarModalCarrito(); // Recursividad para actualizar vista
-          }
-        });
-      });
-
-      // Botones RESTAR (-)
-      carritoBody.querySelectorAll(".btn-restar").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const id = parseInt(e.currentTarget.dataset.id);
-          carrito.restar(id);
-          refrescarModalCarrito();
-        });
-      });
-
-      // Botones ELIMINAR (Papelera)
-      carritoBody.querySelectorAll(".btn-eliminar").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const id = parseInt(e.currentTarget.dataset.id);
-          carrito.eliminar(id);
-          refrescarModalCarrito();
-        });
-      });
-      // Botón VACIAR CARRITO
-      const btnVaciar = carritoBody.querySelector(".btn-vaciar");
-      if (btnVaciar) {
-        btnVaciar.addEventListener("click", () => {
-          //confirm es para que salga un cuadro de confirmación
-          if (confirm("¿Estás seguro de que quieres vaciar el carrito?")) {
-            carrito.vaciar();
-            refrescarModalCarrito();
-          }
-        });
-      }
-    };
-
-    btnCarrito.addEventListener("click", (e) => {
-      e.preventDefault();
-      refrescarModalCarrito(); 
-      modalCarrito.showModal();
-    });
-
-    // Cerrar Carrito
-    btnCerrarCarrito.addEventListener("click", () => {
-      modalCarrito.close();
-    });
-
-    // Cerrar al hacer click fuera (en el backdrop)
-    modalCarrito.addEventListener("click", (e) => {
-      if (e.target === modalCarrito) {
-        modalCarrito.close();
-      }
-    });
+    // Configuración MODAL CARRITO 
+    ConfigurarModalCarrito(carrito);
 
     // CARGA DE DATOS (categorias previamente seleccionadas tras consultar la doc de la API)
     const categorias = [
