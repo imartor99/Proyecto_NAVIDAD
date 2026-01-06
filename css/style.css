@@ -317,7 +317,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: #f1c40f; /* Color dorado */
+  color: #f1c40f; 
   font-weight: bold;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
