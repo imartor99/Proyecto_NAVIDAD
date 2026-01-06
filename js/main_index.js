@@ -7,6 +7,7 @@ import {
   configurarObserver,
   mostrarNotificacion,
 } from "./dom.js";
+import { Carrito } from "./Carrito.js";
 
 // VARIABLES DE ESTADO
 let todosLosProductos = [];
@@ -14,6 +15,11 @@ let productosFiltrados = [];
 let paginaActual = 0;
 const ITEMS_POR_PAGINA = 9;
 let observer = null; //variable global para el observer del scroll infinito
+
+// GESTIÓN DE SESIÓN PARA CARRITO Y BOTON LOGIN/LOGOUT (Global)
+const usuarioMain = obtenerUsuario();
+// Inicializo Carrito inmediatamente para que esté disponible en todas las funciones
+let carrito = new Carrito(usuarioMain ? usuarioMain.id : "invitado");
 
 // FUNCIONES AUXILIARES DE MAIN
 
@@ -58,12 +64,19 @@ const cargarMasProductos = () => {
   const inicio = paginaActual * ITEMS_POR_PAGINA;
   const fin = inicio + ITEMS_POR_PAGINA;
 
-  //Obtengo el lote de productos de 9 
+  //Obtengo el lote de productos de 9
   const loteProductos = productosFiltrados.slice(inicio, fin);
 
   if (loteProductos.length > 0) {
-    // Renderizamos sin limpiar (append)
-    crearCards(loteProductos, false);
+    // Renderizamos sin limpiar (append) y pasamos el callback de añadir (onAdd)
+    crearCards(loteProductos, false, (p) => {
+      if (carrito) {
+        carrito.add(p);
+      } else {
+        console.error("Error: Carrito no inicializado aún");
+        mostrarNotificacion("Error interno del carrito", "red");
+      }
+    });
     paginaActual++;
   }
 };
@@ -94,13 +107,13 @@ const iniciarListado = () => {
  * Aplica los filtros y ordenamiento
  */
 const aplicarFiltrosYOrden = () => {
-  // 1. Recoger valores del DOM
+  // Recoger valores del DOM
   const categoriaSel = document.getElementById("filtro-categoria").value;
   const atributo = document.getElementById("filtro-atributo").value;
   const valor = parseFloat(document.getElementById("filtro-valor").value);
   const orden = document.getElementById("filtro-orden").value;
 
-  // 2. Filtrar
+  // Filtrar
   let resultado = [...todosLosProductos];
 
   if (categoriaSel !== "") {
@@ -135,7 +148,6 @@ const aplicarFiltrosYOrden = () => {
 
 const main = async () => {
   try {
-    // GESTIÓN DE SESIÓN (UX)
     // Comprobamos usuario sin forzar login para cambios en NAVBAR
     const usuario = obtenerUsuario();
 
@@ -158,6 +170,83 @@ const main = async () => {
         btnLogin.href = "login.html";
       }
     }
+
+    // Configuración MODAL CARRITO
+    const btnCarrito = document.getElementById("btn-carrito");
+    const modalCarrito = document.getElementById("modal-carrito");
+    const btnCerrarCarrito = document.getElementById("btn-cerrar-carrito");
+    const carritoBody = document.getElementById("carrito-body");
+    const totalPrecio = document.getElementById("carrito-total-precio");
+
+    // CARRITO
+    // Función central de control del carrito
+    const refrescarModalCarrito = () => {
+      // Renderizado
+      carritoBody.innerHTML = "";
+      carritoBody.appendChild(carrito.dibujarCarrito()); 
+      totalPrecio.textContent = `$${carrito.calcularTotal()}`;
+
+      // Asignación de Listeners a botones internos
+
+      // Botones SUMAR (+)
+      carritoBody.querySelectorAll(".btn-sumar").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const id = parseInt(e.currentTarget.dataset.id);
+          const producto = carrito.articulos.find((p) => p.id === id);
+          if (producto) {
+            carrito.add(producto);
+            refrescarModalCarrito(); // Recursividad para actualizar vista
+          }
+        });
+      });
+
+      // Botones RESTAR (-)
+      carritoBody.querySelectorAll(".btn-restar").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const id = parseInt(e.currentTarget.dataset.id);
+          carrito.restar(id);
+          refrescarModalCarrito();
+        });
+      });
+
+      // Botones ELIMINAR (Papelera)
+      carritoBody.querySelectorAll(".btn-eliminar").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const id = parseInt(e.currentTarget.dataset.id);
+          carrito.eliminar(id);
+          refrescarModalCarrito();
+        });
+      });
+      // Botón VACIAR CARRITO
+      const btnVaciar = carritoBody.querySelector(".btn-vaciar");
+      if (btnVaciar) {
+        btnVaciar.addEventListener("click", () => {
+          //confirm es para que salga un cuadro de confirmación
+          if (confirm("¿Estás seguro de que quieres vaciar el carrito?")) {
+            carrito.vaciar();
+            refrescarModalCarrito();
+          }
+        });
+      }
+    };
+
+    btnCarrito.addEventListener("click", (e) => {
+      e.preventDefault();
+      refrescarModalCarrito(); 
+      modalCarrito.showModal();
+    });
+
+    // Cerrar Carrito
+    btnCerrarCarrito.addEventListener("click", () => {
+      modalCarrito.close();
+    });
+
+    // Cerrar al hacer click fuera (en el backdrop)
+    modalCarrito.addEventListener("click", (e) => {
+      if (e.target === modalCarrito) {
+        modalCarrito.close();
+      }
+    });
 
     // CARGA DE DATOS (categorias previamente seleccionadas tras consultar la doc de la API)
     const categorias = [

@@ -24,7 +24,7 @@
     <title>Home - ProtoShop</title>
   </head>
   <body>
-    <!-- Encabezado con logo y navegación -->
+    <!-- HEADER (LOGO Y NAV) -->
     <header class="encabezado">
       <a href="index.html" class="logo-enlace">
         <img
@@ -65,7 +65,7 @@
     </header>
 
     <main class="contenedor-principal">
-      <!-- Sección de Filtros -->
+      <!-- SECCIÓN FILTROS -->
       <section class="filtros">
         <!-- Grupo 1: Categoría -->
         <div class="filtros__grupo">
@@ -85,6 +85,7 @@
           >
           <select id="filtro-atributo" class="filtros__input">
             <option value="price">Precio menor que</option>
+            <option value="price-higher">Precio mayor que</option>
             <option value="rate">Rating menor que</option>
             <option value="rate-higher">Rating mayor que</option>
           </select>
@@ -117,10 +118,10 @@
         <button id="btn-limpiar-filtros" class="filtros__boton">Limpiar</button>
       </section>
 
-      <!-- Contenedor de los productos -->
+      <!-- CONTENEDOR DE LOS PRODUCTOS (CARDS) -->
       <section id="contenedor" class="productos-grid"></section>
 
-      <!-- Centinela para el Intersection Observer del scroll infinito -->
+      <!-- CENTINELA para el Intersection Observer del scroll infinito -->
       <div id="sentinel" style="height: 1px; width: 100%"></div>
     </main>
 
@@ -164,7 +165,7 @@
       </div>
     </dialog>
 
-    <!-- Modal de Detalle de Producto -->
+    <!-- MODAL DETALLES PRODUCTO -->
     <dialog id="modal-producto" class="modal">
       <div class="modal__contenido">
         <button id="btn-cerrar-modal" class="modal__cerrar">&times;</button>

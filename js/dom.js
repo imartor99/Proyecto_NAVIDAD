@@ -3,14 +3,15 @@
 /**
  * Crea una card por producto y devuelve el elemento DOM
  * @param {Object} producto - El producto a mostrar
+ * @param {Function} onAdd - Callback para añadir al carrito
  * @returns {HTMLElement} - La card creada
  */
-export function crearCard(producto) {
+export function crearCard(producto, onAdd = null) {
   const card = document.createElement("div");
   card.classList.add("tarjeta-producto");
 
   // Añadimos evento click para abrir el modal
-  card.addEventListener("click", () => abrirModal(producto));
+  card.addEventListener("click", () => abrirModal(producto, onAdd));
   card.style.cursor = "pointer"; // Indicador visual de clic
 
   card.innerHTML = `
@@ -20,6 +21,10 @@ export function crearCard(producto) {
         <div class="tarjeta-producto__info">
             <h2 class="tarjeta-producto__titulo">${producto.title}</h2>
             <p class="tarjeta-producto__categoria">${producto.category}</p>
+            <div class="tarjeta-producto__rating">
+                <span class="material-icons">star</span>
+                <span>${producto.rating}</span>
+            </div>
             <p class="tarjeta-producto__precio">$${producto.price}</p>
             <button class="tarjeta-producto__boton btn-add-cart">Añadir al Carrito</button>
         </div>
@@ -38,7 +43,13 @@ export function crearCard(producto) {
       return;
     }
 
-    mostrarNotificacion("Producto añadido (Simulado)", "green");
+    // Si hay callback, lo ejecutamos
+    if (onAdd) {
+      onAdd(producto);
+      mostrarNotificacion("Producto añadido al carrito", "green");
+    } else {
+      mostrarNotificacion("Error: Carrito no inicializado", "red");
+    }
   });
 
   return card;
@@ -48,8 +59,9 @@ export function crearCard(producto) {
  * Renderiza un array de productos en el contenedor principal.
  * @param {Array} productos
  * @param {boolean} limpiar Si es true, vacía el contenedor antes de añadir.
+ * @param {Function} onAdd Callback para añadir al carrito
  */
-export function crearCards(productos, limpiar = false) {
+export function crearCards(productos, limpiar = false, onAdd = null) {
   const contenedor = document.getElementById("contenedor");
   if (!contenedor) return;
 
@@ -60,7 +72,8 @@ export function crearCards(productos, limpiar = false) {
   }
 
   productos.forEach((p) => {
-    const card = crearCard(p);
+    // Pasamos el callback onAdd a cada card individual
+    const card = crearCard(p, onAdd);
     contenedor.appendChild(card);
   });
 }
@@ -70,7 +83,7 @@ export function crearCards(productos, limpiar = false) {
 /**
  * Abre el modal con la información detallada del producto
  */
-export function abrirModal(producto) {
+export function abrirModal(producto, onAdd = null) {
   const modal = document.getElementById("modal-producto");
   if (!modal) return;
 
@@ -85,9 +98,11 @@ export function abrirModal(producto) {
   const descuento = document.getElementById("modal-descuento");
   if (producto.discountPercentage) {
     descuento.textContent = `-${producto.discountPercentage}%`;
-    descuento.style.display = "inline-block";
+    descuento.classList.remove("d-none");
+    descuento.classList.add("d-inline-block");
   } else {
-    descuento.style.display = "none";
+    descuento.classList.remove("d-inline-block");
+    descuento.classList.add("d-none");
   }
   // Descripcion
   document.getElementById("modal-desc").textContent = producto.description;
@@ -96,8 +111,14 @@ export function abrirModal(producto) {
   document.getElementById("modal-stock").textContent = producto.stock
     ? `${producto.stock} unidades`
     : "Consultar";
-  document.getElementById("modal-stock").style.color =
-    producto.stock && producto.stock < 10 ? "red" : "green";
+
+  const elStock = document.getElementById("modal-stock");
+  elStock.classList.remove("text-red", "text-green");
+  if (producto.stock && producto.stock < 10) {
+    elStock.classList.add("text-red");
+  } else {
+    elStock.classList.add("text-green");
+  }
 
   document.getElementById("modal-sku").textContent =
     producto.sku || `#${producto.id}`; //si no existe sku, muestro el id como referencia del producto
@@ -108,7 +129,7 @@ export function abrirModal(producto) {
     : "N/A";
 
   if (producto.dimensions) {
-    const { width, height, depth } = producto.dimensions;//almacenamos cada propiedad de dimensions en una variable
+    const { width, height, depth } = producto.dimensions; //almacenamos cada propiedad de dimensions en una variable
     document.getElementById(
       "modal-dimensiones"
     ).textContent = `${width} x ${height} x ${depth} cm`;
@@ -128,6 +149,26 @@ export function abrirModal(producto) {
   document.getElementById("modal-votos").textContent = `(${
     Math.floor(Math.random() * 500) + 50
   } votos)`; // Simulado ya que la api solo muestra 3 reviews pero no cuadra con el rating
+
+  // Lógica Botón Añadir al Carrito del Modal
+  const btnAñadirModal = modal.querySelector(".modal__boton-accion");
+  if (btnAñadirModal) {
+    btnAñadirModal.onclick = () => {
+      // Verifico si el usuario está logueado
+      const usuario = localStorage.getItem("usuarioLogueado");
+      if (!usuario) {
+        mostrarNotificacion("Inicia sesión para comprar", "red");
+        setTimeout(() => (window.location.href = "login.html"), 1000);
+        return;
+      }
+
+      if (onAdd) {
+        onAdd(producto);
+        mostrarNotificacion("Producto añadido al carrito", "green");
+        modal.close();
+      }
+    };
+  }
 
   // Cerrar modal
   const btnCerrar = document.getElementById("btn-cerrar-modal");
@@ -204,13 +245,14 @@ export function filtrarProductos(productos, obFiltro) {
   return productos.filter((producto) => {
     if (atributo === "price") {
       return producto.price < valor;
+    } else if (atributo === "price-higher") {
+      return producto.price >= valor;
     } else if (atributo === "rate") {
-      return producto.rating.rate < valor;
+      return producto.rating < valor;
     } else if (atributo === "rate-higher") {
-      return producto.rating.rate >= valor;
-    } else if (atributo === "count") {
-      return producto.rating.count < valor;
+      return producto.rating >= valor;
     }
+
     return true; // Si no se cumple ninguna condición, se mantiene el producto igualmente para evitar undefined
   });
 }
