@@ -313,6 +313,20 @@ body {
   border-radius: 20px;
 }
 
+.tarjeta-producto__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #f1c40f; /* Color dorado */
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.tarjeta-producto__rating .material-icons {
+  font-size: 1.1rem;
+}
+
 .tarjeta-producto__precio {
   font-size: 1.5rem;
   font-weight: bold;
@@ -641,6 +655,36 @@ body {
   color: #d63031;
 }
 
+/* Acciones del Carrito (Vaciar, etc) */
+.carrito-acciones {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+.btn-vaciar {
+  background-color: #ff7675;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-vaciar:hover {
+  background-color: #d63031;
+}
+
+.carrito-vacio {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: var(--color-texto);
+}
+
 /* Footer del Carrito (Total y Botón) */
 .carrito__footer {
   border-top: 2px solid #f1f2f6;
@@ -660,4 +704,27 @@ body {
 
 #carrito-total-precio {
   color: var(--color-primario);
+}
+
+/* =========================================
+   CLASES UTILITARIAS (Para no tener que meterlas en el JS)
+   ========================================= */
+.d-none {
+  display: none !important;
+}
+
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.text-red {
+  color: #d63031 !important;
+}
+
+.text-green {
+  color: #00b894 !important;
 }
