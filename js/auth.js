@@ -81,8 +81,28 @@ export function verificarLogin() {
   const usuario = obtenerUsuario();
   if (!usuario) {
     // Si NO hay usuario guardado, redirigir a login
-    // alert('Debes iniciar sesión primero'); // Comentado para ser menos invasivo en checks automáticos
-    window.location.href = "login.html";
+    // Usamos Toastify antes de redirigir para que el usuario sepa que debe iniciar sesión
+    if (typeof Toastify === "function") {
+      Toastify({
+        text: "Inicia sesión para comprar",
+        duration: 1000,
+        gravity: "bottom",
+        position: "center",
+        style: {
+          background: "red",
+          borderRadius: "20px",
+          color: "white",
+        },
+      }).showToast();
+    } else {
+      alert("Inicia sesión para comprar");
+    }
+
+    // Pequeño delay para que se vea el mensaje
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 1000);
+
     return null;
   }
   return usuario;

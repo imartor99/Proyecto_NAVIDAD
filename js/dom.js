@@ -1,3 +1,4 @@
+import { verificarLogin } from "./auth.js";
 //============ CREACION DE CARDS ============
 
 /**
@@ -36,12 +37,8 @@ export function crearCard(producto, onAdd = null) {
     e.stopPropagation(); // Evitar que se abra el modal
 
     // Verifico si el usuario está logueado
-    const usuario = localStorage.getItem("usuarioLogueado");
-    if (!usuario) {
-      mostrarNotificacion("Inicia sesión para comprar", "red");
-      setTimeout(() => (window.location.href = "login.html"), 1000);
-      return;
-    }
+    // Verifico login usando la función centralizada
+    if (!verificarLogin()) return;
 
     // Si hay callback, lo ejecutamos
     if (onAdd) {
@@ -155,12 +152,8 @@ export function abrirModal(producto, onAdd = null) {
   if (btnAñadirModal) {
     btnAñadirModal.onclick = () => {
       // Verifico si el usuario está logueado
-      const usuario = localStorage.getItem("usuarioLogueado");
-      if (!usuario) {
-        mostrarNotificacion("Inicia sesión para comprar", "red");
-        setTimeout(() => (window.location.href = "login.html"), 1000);
-        return;
-      }
+      // Verifico login usando la función centralizada
+      if (!verificarLogin()) return;
 
       if (onAdd) {
         onAdd(producto);
