@@ -140,6 +140,30 @@
       </p>
     </footer>
 
+    <!-- MODAL CARRITO -->
+    <dialog id="modal-carrito" class="modal">
+      <div class="modal__contenido modal__contenido--carrito">
+        <button class="modal__cerrar" id="btn-cerrar-carrito">&times;</button>
+        <h2 class="modal__titulo">
+          Tu Carrito <span class="material-icons">shopping_cart</span>
+        </h2>
+
+        <div id="carrito-body" class="carrito__items">
+          <!-- Aquí se inyecta el fragment del carrito -->
+        </div>
+
+        <div class="carrito__footer">
+          <div class="carrito__total">
+            <span>Total:</span>
+            <span id="carrito-total-precio">$0.00</span>
+          </div>
+          <button class="boton-primario" id="btn-finalizar-compra">
+            Finalizar Compra
+          </button>
+        </div>
+      </div>
+    </dialog>
+
     <!-- Modal de Detalle de Producto -->
     <dialog id="modal-producto" class="modal">
       <div class="modal__contenido">
