@@ -183,7 +183,11 @@ export function abrirModal(producto, onAdd = null) {
  */
 export function mostrarNotificacion(texto, color = "#f1c40f") {
   if (typeof Toastify !== "undefined") {
-    Toastify({
+    // Detectar si hay un modal abierto (Top Layer)
+    const modalAbierto = document.querySelector("dialog[open]");
+
+    // Configuración base
+    const config = {
       text: texto,
       duration: 1000,
       gravity: "bottom",
@@ -192,9 +196,36 @@ export function mostrarNotificacion(texto, color = "#f1c40f") {
         background: color,
         borderRadius: "20px",
         color: color === "#f1c40f" ? "black" : "white",
+        zIndex: 999999, // Seguir forzando por si acaso
       },
       stopOnFocus: false,
-    }).showToast();
+    };
+
+    // Generamos el toast normal
+    const toast = Toastify(config);
+    toast.showToast();
+
+    // Muevo el toast dentro del modal si existe y se encuentra abierto para poder visualizarlo bien
+    setTimeout(() => {
+      if (modalAbierto && toast.toastElement) {
+        if (!modalAbierto.contains(toast.toastElement)) {
+          modalAbierto.appendChild(toast.toastElement);
+
+          // Forzar estilos para que se vea bien dentro del transform del modal
+          Object.assign(toast.toastElement.style, {
+            position: "fixed",
+            bottom: "25px",
+            left: "17%",
+            transform: "translateX(-50%)",
+            zIndex: "2147483647",
+            width: "max-content",
+            maxWidth: "90%",
+            whiteSpace: "normal",
+            textAlign: "center",
+          });
+        }
+      }
+    }, 50);
   }
 }
 
@@ -419,7 +450,8 @@ export function ConfigurarModalCarrito(carrito) {
             "red"
           );
         })
-        .finally(() => {           //reactivo el boton finalizar compra por si ha habido algun error que pueda usarse de nuevo
+        .finally(() => {
+          //reactivo el boton finalizar compra por si ha habido algun error que pueda usarse de nuevo
           btnFinalizar.innerText = btnOriginalText;
           btnFinalizar.disabled = false;
         });

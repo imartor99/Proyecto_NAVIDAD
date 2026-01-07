@@ -745,6 +745,11 @@ body {
   color: #00b894 !important;
 }
 
+/* Fix para que Toastify se vea sobre los modales (Dialog) */
+.toastify {
+  z-index: 999999 !important; /* Capa superior absoluta */
+}
+
 /* --- FOOTER SOCIAL --- */
 .pie-pagina {
   background-color: var(--color-texto);
