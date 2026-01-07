@@ -1,0 +1,211 @@
+/* =========================================
+   PAGINA NOSOTROS
+   ========================================= */
+
+.nosotros-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.nosotros-intro {
+  text-align: center;
+  margin-bottom: 3rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nosotros-titulo {
+  font-size: 2.5rem;
+  color: var(--color-primario);
+  margin-bottom: 1rem;
+}
+
+.nosotros-texto {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* --- GALERÍA GRID IRREGULAR (Bento Style) --- */
+.galeria-seccion {
+  margin-bottom: 4rem;
+}
+
+.titulo-seccion {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: var(--color-texto);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.titulo-seccion::after {
+  content: "";
+  display: block;
+  width: 50%;
+  height: 3px;
+  background: var(--color-acento);
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
+
+.galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 200px;
+  gap: 1rem;
+}
+
+.galeria-item {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--sombra-suave);
+  transition: transform 0.3s ease;
+}
+
+.galeria-item:hover {
+  transform: scale(1.02);
+}
+
+.galeria-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Layout Irregular */
+.item-1 {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.item-2 {
+  grid-column: span 2;
+}
+
+.item-3 {
+  grid-column: span 1;
+  grid-row: span 2;
+}
+
+.item-4 {
+  grid-column: span 1;
+  grid-row: span 2;
+}
+
+.item-5 {
+  grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+  .galeria-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 150px;
+  }
+  .item-1,
+  .item-2,
+  .item-3,
+  .item-4,
+  .item-5 {
+    grid-column: span 1 !important; /* Reset layout on mobile */
+    grid-row: span 1 !important;
+  }
+  .item-1 {
+    grid-column: span 2 !important; /* Keep hero image big */
+    grid-row: span 2 !important;
+  }
+}
+
+/* --- CONTACTO Y HORARIOS --- */
+.contacto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--sombra-card);
+}
+
+@media (max-width: 768px) {
+  .contacto-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Formulario */
+.formulario-wrapper h3,
+.horario-wrapper h3 {
+  color: var(--color-primario);
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.form-grupo {
+  margin-bottom: 1rem;
+}
+
+.form-grupo label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-grupo input,
+.form-grupo textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.form-grupo input:focus,
+.form-grupo textarea:focus {
+  border-color: var(--color-primario);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+}
+
+/* Tabla Horarios */
+.tabla-horarios {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.tabla-horarios th,
+.tabla-horarios td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.tabla-horarios th {
+  color: var(--color-secundario);
+  font-weight: 600;
+}
+
+.tabla-horarios tr:last-child td {
+  border-bottom: none;
+}
+
+.info-extra p {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.info-extra .material-icons {
+  color: var(--color-acento);
+}

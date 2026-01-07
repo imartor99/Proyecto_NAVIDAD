@@ -31,6 +31,22 @@ body {
   min-height: 100vh;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.contenedor-principal,
+.nosotros-container {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
 /* =========================================
    LAYOUT PRINCIPAL (Estructura General)
    ========================================= */
@@ -317,7 +333,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: #f1c40f; 
+  color: #f1c40f;
   font-weight: bold;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
@@ -727,4 +743,38 @@ body {
 
 .text-green {
   color: #00b894 !important;
+}
+
+/* --- FOOTER SOCIAL --- */
+.pie-pagina {
+  background-color: var(--color-texto);
+  color: var(--color-blanco);
+  text-align: center;
+  padding: 3rem 1rem;
+  margin-top: 4rem;
+}
+
+.pie-pagina__sociales {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.social-icon {
+  color: var(--color-blanco);
+  font-size: 1.5rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+  opacity: 0.8;
+}
+
+.social-icon:hover {
+  opacity: 1;
+  color: var(--color-primario);
+  transform: translateY(-3px);
+}
+
+.pie-pagina__texto {
+  font-size: 0.9rem;
+  opacity: 0.7;
 }

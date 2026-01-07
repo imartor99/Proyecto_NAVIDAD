@@ -1,26 +1,212 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Nosotros - ProtoShop</title>
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="nosotros.html">Sobre Nosotros</a></li>
-            </ul>
-        </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/img/logo_fondo.png" type="image/x-icon" />
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style_nosotros.css" />
+    <title>Sobre Nosotros - ProtoShop</title>
+  </head>
+  <body>
+    <!-- HEADER (Copiado de index.html para consistencia) -->
+    <header class="encabezado">
+      <a href="index.html" class="logo-enlace">
+        <img
+          src="assets/img/logo_fondo.png"
+          alt="ProtoShop Logo"
+          class="encabezado__logo"
+        />
+      </a>
+      <nav class="navegacion">
+        <ul class="navegacion__lista">
+          <li class="navegacion__item">
+            <a href="index.html" class="navegacion__enlace">
+              <span class="material-icons">home</span> Home
+            </a>
+          </li>
+          <li class="navegacion__item">
+            <a href="nosotros.html" class="navegacion__enlace active">
+              <span class="material-icons">group</span> Sobre Nosotros
+            </a>
+          </li>
+          <li class="navegacion__item">
+            <a
+              href="login.html"
+              class="navegacion__enlace"
+              id="btn-login-logout"
+            >
+              <span class="material-icons">login</span> Login
+            </a>
+          </li>
+          <!-- Carrito omitido o presente? Lo dejaremos por consistencia aunque no tenga funcionalidad dinámica compleja aquí, o sí? 
+               El usuario no pidió lógica de carrito aquí, solo contenido. Lo dejaré visualmente. -->
+          <li class="navegacion__item">
+            <a href="index.html" class="navegacion__enlace">
+              <span class="material-icons">shopping_cart</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </header>
-    <main>
-        
+
+    <main class="contenedor-principal nosotros-container">
+      <!-- SECCIÓN INTRODUCCIÓN -->
+      <section class="nosotros-intro">
+        <h1 class="nosotros-titulo">Nuestra Historia</h1>
+        <p class="nosotros-texto">
+          Bienvenido a <strong>ProtoShop</strong>, tu destino número uno para la
+          tecnología más innovadora y accesorios de vanguardia. Fundada en 2024,
+          nuestra misión es democratizar el acceso a gadgets de alta calidad,
+          ofreciendo una experiencia de compra fluida y segura.
+        </p>
+        <p class="nosotros-texto" style="margin-top: 1rem">
+          Nos apasiona el futuro y creemos que la tecnología debe ser accesible,
+          estética y funcional. Desde smartphones de última generación hasta los
+          wearables más elegantes, seleccionamos meticulosamente cada producto
+          de nuestro catálogo.
+        </p>
+      </section>
+
+      <!-- GALERÍA GRID IRREGULAR -->
+      <section class="galeria-seccion">
+        <h2 class="titulo-seccion">Nuestro Equipo y Espacio</h2>
+        <div class="galeria-grid">
+          <!-- Item 1: Grande -->
+          <div class="galeria-item item-1">
+            <img src="assets/img/sobre_nosotros.png" alt="Oficina Principal" />
+          </div>
+          <!-- Item 2 -->
+          <div class="galeria-item item-2">
+            <img src="assets/img/sobre_nosotros2.png" alt="Equipo de Trabajo" />
+          </div>
+          <!-- Item 3 -->
+          <div class="galeria-item item-3">
+            <img src="assets/img/sobre_nosotros3.png" alt="Almacén" />
+          </div>
+          <!-- Item 4: Alto -->
+          <div class="galeria-item item-4">
+            <img src="assets/img/sobre_nosotros4.png" alt="Reuniones" />
+          </div>
+          <!-- Item 5 -->
+          <div class="galeria-item item-5">
+            <img
+              src="assets/img/sobre_nosotros5.jpg"
+              alt="Atención al Cliente"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACTO Y HORARIOS -->
+      <section class="contacto-seccion">
+        <h2 class="titulo-seccion">Contáctanos</h2>
+
+        <div class="contacto-grid">
+          <!-- FORMULARIO -->
+          <div class="formulario-wrapper">
+            <h3>Envíanos un mensaje</h3>
+            <form class="formulario-contacto">
+              <div class="form-grupo">
+                <label for="nombre">Nombre</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  placeholder="Tu nombre"
+                  required
+                />
+              </div>
+              <div class="form-grupo">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="tu@email.com"
+                  required
+                />
+              </div>
+              <div class="form-grupo">
+                <label for="mensaje">Mensaje</label>
+                <textarea
+                  id="mensaje"
+                  name="mensaje"
+                  rows="5"
+                  placeholder="¿En qué podemos ayudarte?"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="boton-primario">
+                Enviar Mensaje
+              </button>
+            </form>
+          </div>
+
+          <!-- TABLA HORARIOS -->
+          <div class="horario-wrapper">
+            <h3>Horario de Atención</h3>
+            <table class="tabla-horarios">
+              <thead>
+                <tr>
+                  <th>Día</th>
+                  <th>Horario</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Lunes - Viernes</td>
+                  <td>09:00 - 20:00</td>
+                </tr>
+                <tr>
+                  <td>Sábados</td>
+                  <td>10:00 - 14:00</td>
+                </tr>
+                <tr>
+                  <td>Domingos</td>
+                  <td>Cerrado</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="info-extra">
+              <p>
+                <span class="material-icons">location_on</span> Calle Tecnología
+                123, Ciudad Futura
+              </p>
+              <p><span class="material-icons">phone</span> +34 912 345 678</p>
+              <p>
+                <span class="material-icons">email</span> contacto@protoshop.com
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
-    <footer>
-        
+    <footer class="pie-pagina">
+      <div class="pie-pagina__sociales">
+        <a href="#" class="social-icon"
+          ><i class="fa-brands fa-instagram"></i
+        ></a>
+        <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#" class="social-icon"
+          ><i class="fa-brands fa-facebook-f"></i
+        ></a>
+        <a href="#" class="social-icon"><i class="fa-brands fa-tiktok"></i></a>
+      </div>
+      <p class="pie-pagina__texto">
+        &copy; 2025 ProtoShop. Todos los derechos reservados.
+      </p>
     </footer>
-</body>
+  </body>
 </html>
