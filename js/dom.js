@@ -1,4 +1,4 @@
-import { verificarLogin } from "./auth.js";
+import { verificarLogin, obtenerUsuario } from "./auth.js";
 //============ CREACION DE CARDS ============
 
 /**
@@ -365,4 +365,64 @@ export function ConfigurarModalCarrito(carrito) {
       modalCarrito.close();
     }
   });
+
+  // Botón FINALIZAR COMPRA (Integración EmailJS)
+  const btnFinalizar = document.getElementById("btn-finalizar-compra");
+  if (btnFinalizar) {
+    btnFinalizar.addEventListener("click", () => {
+      // Valido carrito
+      if (carrito.articulos.length === 0) {
+        mostrarNotificacion("El carrito está vacío", "red");
+        return;
+      }
+
+      // Valido usuario
+      const usuario = obtenerUsuario();
+      if (!usuario) {
+        mostrarNotificacion("Debes iniciar sesión para comprar", "orange");
+        setTimeout(() => (window.location.href = "login.html"), 1500);
+        return;
+      }
+
+      const btnOriginalText = btnFinalizar.innerText;
+      btnFinalizar.innerText = "Enviando...";
+      btnFinalizar.disabled = true;
+
+      // Preparo datos para EmailJS
+      const resumenPedido = carrito.articulos
+        .map((p) => `- ${p.title} (x${p.cantidad}) - $${p.price * p.cantidad}`)
+        .join("\n");
+
+      const params = {
+        to_name: usuario.name,
+        to_email: usuario.email, // Asumiendo que el usuario tiene email
+        message: resumenPedido,
+        total_price: carrito.calcularTotal(),
+      };
+
+      // Envio correo (Service ID y Template ID de prueba/placeholder)
+      emailjs
+        .send("service_342wlpc", "template_0d4i86k", params)
+        .then(() => {
+          mostrarNotificacion(
+            "¡Compra realizada con éxito! Revisar correo.",
+            "green"
+          );
+          carrito.vaciar();
+          refrescarModal();
+          modalCarrito.close();
+        })
+        .catch((err) => {
+          console.error("Error EmailJS:", err);
+          mostrarNotificacion(
+            "Error al procesar el pedido. Intente luego.",
+            "red"
+          );
+        })
+        .finally(() => {           //reactivo el boton finalizar compra por si ha habido algun error que pueda usarse de nuevo
+          btnFinalizar.innerText = btnOriginalText;
+          btnFinalizar.disabled = false;
+        });
+    });
+  }
 }
