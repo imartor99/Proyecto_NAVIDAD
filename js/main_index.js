@@ -1,3 +1,15 @@
+/**
+ * main_index.js
+ *
+ * Controlador principal para la página de inicio (`index.html`).
+ * Gestiona:
+ * - La alternancia entre formularios (efecto Flip Card).
+ * - La gestión del carrito de compras.
+ * - La carga dinámica de productos desde una API.
+ * - La paginación y filtrado de productos.
+ * - El manejo de sesiones y autenticación.
+ */
+
 import { consultarAPI } from "./api.js";
 import { cerrarSesion, obtenerUsuario } from "./auth.js";
 import {

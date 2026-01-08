@@ -1,3 +1,13 @@
+/**
+ * dom.js 
+ * 
+ * Controlador para la creación de cards y el manejo de eventos.
+ * Gestiona:
+ * - La creación de cards para mostrar productos.
+ * - El manejo de eventos para abrir modales y añadir productos al carrito.
+ * - La verificación de sesión y autenticación.
+ */
+
 import { verificarLogin, obtenerUsuario } from "./auth.js";
 //============ CREACION DE CARDS ============
 

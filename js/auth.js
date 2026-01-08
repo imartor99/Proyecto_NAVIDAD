@@ -1,3 +1,13 @@
+/**
+ * auth.js
+ *
+ * Controlador para la autenticación de usuarios.
+ * Gestiona:
+ * - La validación de credenciales.
+ * - La generación y verificación de CAPTCHA.
+ * - La gestión de sesiones.
+ */
+
 import { consultarAPI } from "./api.js";
 
 // URL del endpoint de usuarios en nuestro json-server

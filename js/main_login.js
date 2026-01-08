@@ -1,3 +1,12 @@
+/**
+ * main_login.js
+ *
+ * Controlador principal para la página de Login y Registro (`login.html`).
+ * Gestiona:
+ * - La alternancia entre formularios (efecto Flip Card).
+ * - La validación del CAPTCHA matemático.
+ * - El inicio de sesión y registro de nuevos usuarios interactuando con `auth.js`.
+ */
 import { validarCredenciales, mostrarCaptcha } from "./auth.js";
 
 const main = () => {
