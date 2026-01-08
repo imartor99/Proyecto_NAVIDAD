@@ -76,7 +76,6 @@ He tenido que documentarme del uso de esta librería, para asi poder enviar corr
 
 ## URL del proyecto
 
-https://proto-shop-igntorres.vercel.app/
 
 ---
 
