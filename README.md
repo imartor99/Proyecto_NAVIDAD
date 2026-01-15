@@ -74,12 +74,12 @@ He tenido que documentarme del uso de esta librería, para asi poder enviar corr
 
 ---
 
-## URL del proyecto(provisional)
+## URL del proyecto(SIN LA FUNCION DEL LOGIN ACTIVA POR EL JSON-SERVER)
 https://imartor99.github.io/Proyecto_NAVIDAD/
 
 ---
 
-## Cómo ejecutar el proyecto
+## Cómo ejecutar el proyecto en tu maquina local (adjunto .rar con el proyecto también en la entrega)
 
 1.  **Instalar dependencias JSON-Server** (para el servidor simulado):
 
